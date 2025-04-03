@@ -1,11 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  createContext,
-  useContext,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, ReactNode, useState } from "react";
 
 import { api } from "@/services/api";
 import { AxiosError } from "axios";
@@ -159,36 +153,6 @@ function AuthProvider({ children }: ChildrenProps) {
     setData(null);
     window.location.reload();
   }
-
-  useEffect(() => {
-    async function handleUserSession() {
-      try {
-        const dataUser = localStorage.getItem("@chip_control:user");
-
-        if (dataUser) {
-          const user = JSON.parse(dataUser);
-
-          await api.get("/session", {
-            headers: {
-              "x-access-token": user.token,
-            },
-          });
-
-          setData(user);
-        }
-      } catch (error: unknown) {
-        if (error instanceof AxiosError && error.response) {
-          AlertMessage(error.response.data.message, "error");
-        } else {
-          AlertMessage(
-            "Não foi possível iniciar a sessão, tente novamente mais tarde.",
-            "error"
-          );
-        }
-      }
-    }
-    handleUserSession();
-  }, []);
 
   return (
     <>
